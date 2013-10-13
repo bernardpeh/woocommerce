@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
 
 		$('ul.tabs li', $tabs_wrapper).removeClass('active');
 		$('div.panel', $tabs_wrapper).hide();
-		$('div' + $tab.attr('href')).show();
+		$('div' + $tab.attr('href'), $tabs_wrapper).show();
 		$tab.parent().addClass('active');
 
 		return false;
@@ -43,8 +43,8 @@ jQuery(document).ready(function($) {
 			var $rating = $(this).closest('#respond').find('#rating');
 			var rating  = $rating.val();
 
-			if ( $rating.size() > 0 && ! rating && woocommerce_params.review_rating_required == 'yes' ) {
-				alert(woocommerce_params.i18n_required_rating_text);
+			if ( $rating.size() > 0 && ! rating && wc_single_product_params.review_rating_required == 'yes' ) {
+				alert(wc_single_product_params.i18n_required_rating_text);
 				return false;
 			}
 		});
