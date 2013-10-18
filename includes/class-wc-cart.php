@@ -995,15 +995,15 @@ class WC_Cart {
 		 * @return void
 		 */
 		private function set_cart_cookies( $set = true ) {
-			if ( ! headers_sent() ) {
-				if ( $set ) {
-					setcookie( "woocommerce_items_in_cart", "1", 0, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( "woocommerce_cart_hash", md5( json_encode( $this->get_cart() ) ), 0, COOKIEPATH, COOKIE_DOMAIN, false );
-				} else {
-					setcookie( "woocommerce_items_in_cart", "0", time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
-					setcookie( "woocommerce_cart_hash", "0", time() - 3600, COOKIEPATH, COOKIE_DOMAIN, false );
-				}
+			if ( $set ) {
+				wc_setcookie( 'woocommerce_items_in_cart', 1 );
+				wc_setcookie( 'woocommerce_cart_hash', md5( json_encode( $this->get_cart() ) ) );
+			} else {
+				wc_setcookie( 'woocommerce_items_in_cart', 0, time() - 3600 );
+				wc_setcookie( 'woocommerce_cart_hash', '', time() - 3600 );
 			}
+
+			do_action( 'woocommerce_set_cart_cookies', $set );
 		}
 
     /*-----------------------------------------------------------------------------------*/
@@ -2228,7 +2228,7 @@ class WC_Cart {
 		/**
 		 * Get the product row price per item.
 		 *
-		 * @params object product
+		 * @param WC_Product $_product
 		 * @return string formatted price
 		 */
 		public function get_product_price( $_product ) {
@@ -2247,8 +2247,8 @@ class WC_Cart {
 		 *
 		 * When on the checkout (review order), this will get the subtotal based on the customer's tax rate rather than the base rate
 		 *
-		 * @params object product
-		 * @params int quantity
+		 * @param WC_Product $_product
+		 * @param int quantity
 		 * @return string formatted price
 		 */
 		public function get_product_subtotal( $_product, $quantity ) {
@@ -2256,8 +2256,6 @@ class WC_Cart {
 
 			$price 			= $_product->get_price();
 			$taxable 		= $_product->is_taxable();
-			$base_tax_rates = $this->tax->get_shop_base_rate( $_product->tax_class );
-			$tax_rates 		= $this->tax->get_rates( $_product->get_tax_class() ); // This will get the base rate unless we're on the checkout page
 
 			// Taxable
 			if ( $taxable ) {
