@@ -39,7 +39,8 @@ function woocommerce_sanitize_taxonomy_name( $taxonomy ) {
  */
 function woocommerce_get_filename_from_url( $file_url ) {
 	$parts = parse_url( $file_url );
-	return basename( $parts['path'] );
+	if ( isset( $parts['path'] ) )
+		return basename( $parts['path'] );
 }
 
 /**
@@ -153,6 +154,24 @@ function woocommerce_get_weight( $weight, $to_unit ) {
  */
 function woocommerce_trim_zeros( $price ) {
 	return preg_replace( '/' . preg_quote( get_option( 'woocommerce_price_decimal_sep' ), '/' ) . '0++$/', '', $price );
+}
+
+/**
+ * Round a tax amount
+ *
+ * @access public
+ * @param mixed $price
+ * @return string
+ */
+function woocommerce_round_tax_total( $tax ) {
+	$dp = (int) get_option( 'woocommerce_price_num_decimals' );
+
+	if ( version_compare( phpversion(), '5.3', '<' ) ) {
+		$tax = round( $tax, $dp );
+	} else {
+		$tax = round( $tax, $dp, WC_TAX_ROUNDING_MODE );
+	}
+	return $tax;
 }
 
 /**

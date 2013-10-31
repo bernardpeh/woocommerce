@@ -66,17 +66,17 @@ class WC_Admin_Assets {
 		$suffix       = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts
-		wp_register_script( 'woocommerce_admin', $woocommerce->plugin_url() . '/assets/js/admin/woocommerce_admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-placeholder', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), $woocommerce->version );
+		wp_register_script( 'woocommerce_admin', $woocommerce->plugin_url() . '/assets/js/admin/woocommerce_admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-tiptip' ), $woocommerce->version );
 
 		wp_register_script( 'jquery-blockui', $woocommerce->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.60', true );
-
-		wp_register_script( 'jquery-placeholder', $woocommerce->plugin_url() . '/assets/js/jquery-placeholder/jquery.placeholder' . $suffix . '.js', array( 'jquery' ), $woocommerce->version, true );
 
 		wp_register_script( 'jquery-tiptip', $woocommerce->plugin_url() . '/assets/js/jquery-tiptip/jquery.tipTip' . $suffix . '.js', array( 'jquery' ), $woocommerce->version, true );
 
 		wp_register_script( 'accounting', $woocommerce->plugin_url() . '/assets/js/admin/accounting' . $suffix . '.js', array( 'jquery' ), '1.3.2' );
 
-		wp_register_script( 'woocommerce_admin_meta_boxes', $woocommerce->plugin_url() . '/assets/js/admin/meta-boxes' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'accounting' ), $woocommerce->version );
+		wp_register_script( 'round', $woocommerce->plugin_url() . '/assets/js/admin/round' . $suffix . '.js', array( 'jquery' ), '1.0.0' );
+
+		wp_register_script( 'woocommerce_admin_meta_boxes', $woocommerce->plugin_url() . '/assets/js/admin/meta-boxes' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'accounting', 'round' ), $woocommerce->version );
 
 		wp_register_script( 'woocommerce_admin_meta_boxes_variations', $woocommerce->plugin_url() . '/assets/js/admin/meta-boxes-variations' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), $woocommerce->version );
 
@@ -110,7 +110,7 @@ class WC_Admin_Assets {
 
 		// Products
 		if ( in_array( $screen->id, array( 'edit-product' ) ) )
-			wp_enqueue_script( 'woocommerce_quick-edit', $woocommerce->plugin_url() . '/assets/js/admin/quick-edit.js', array('jquery') );
+			wp_enqueue_script( 'woocommerce_quick-edit', $woocommerce->plugin_url() . '/assets/js/admin/quick-edit' . $suffix . '.js', array('jquery'), $woocommerce->version );
 
 		// Product/Coupon/Orders
 		if ( in_array( $screen->id, array( 'shop_coupon', 'shop_order', 'product', 'edit-shop_coupon', 'edit-shop_order', 'edit-product' ) ) ) {
@@ -160,6 +160,8 @@ class WC_Admin_Assets {
 				'currency_format_decimal_sep'	=> esc_attr( stripslashes( get_option( 'woocommerce_price_decimal_sep' ) ) ),
 				'currency_format_thousand_sep'	=> esc_attr( stripslashes( get_option( 'woocommerce_price_thousand_sep' ) ) ),
 				'currency_format'				=> esc_attr( str_replace( array( '%1$s', '%2$s' ), array( '%s', '%v' ), get_woocommerce_price_format() ) ), // For accounting JS
+				'rounding_precision'            => WC_ROUNDING_PRECISION,
+				'tax_rounding_mode'             => WC_TAX_ROUNDING_MODE,
 				'product_types'					=> array_map( 'sanitize_title', get_terms( 'product_type', array( 'hide_empty' => false, 'fields' => 'names' ) ) ),
 				'default_attribute_visibility'  => apply_filters( 'default_attribute_visibility', false ),
 				'default_attribute_variation'   => apply_filters( 'default_attribute_variation', false ),
@@ -221,7 +223,7 @@ class WC_Admin_Assets {
 		}
 
 		// Reports Pages
-		if ( in_array( $screen->id, apply_filters( 'woocommerce_reports_screen_ids', array( $wc_screen_id . '_page_wc_reports', 'dashboard' ) ) ) ) {
+		if ( in_array( $screen->id, apply_filters( 'woocommerce_reports_screen_ids', array( $wc_screen_id . '_page_wc-reports', 'dashboard' ) ) ) ) {
 			wp_enqueue_script( 'wc-reports', WC()->plugin_url() . '/assets/js/admin/reports' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker' ), '1.0' );
 			wp_enqueue_script( 'flot', WC()->plugin_url() . '/assets/js/admin/jquery.flot' . $suffix . '.js', array( 'jquery' ), '1.0' );
 			wp_enqueue_script( 'flot-resize', WC()->plugin_url() . '/assets/js/admin/jquery.flot.resize' . $suffix . '.js', array('jquery', 'flot'), '1.0' );

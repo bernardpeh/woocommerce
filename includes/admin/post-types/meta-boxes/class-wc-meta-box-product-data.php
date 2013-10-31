@@ -102,7 +102,7 @@ class WC_Meta_Box_Product_Data {
 						),
 						'attribute' => array(
 							'label'  => __( 'Attributes', 'woocommerce' ),
-							'target' => 'woocommerce_attributes',
+							'target' => 'product_attributes',
 							'class'  => array(),
 						),
 						'variations' => array(
@@ -383,7 +383,7 @@ class WC_Meta_Box_Product_Data {
 
 			</div>
 
-			<div id="woocommerce_attributes" class="panel wc-metaboxes-wrapper">
+			<div id="product_attributes" class="panel wc-metaboxes-wrapper">
 
 				<p class="toolbar">
 					<a href="#" class="close_all"><?php _e( 'Close all', 'woocommerce' ); ?></a><a href="#" class="expand_all"><?php _e( 'Expand all', 'woocommerce' ); ?></a>
@@ -469,7 +469,7 @@ class WC_Meta_Box_Product_Data {
 																$values = array();
 																foreach ( $post_terms as $term )
 																	$values[] = $term->name;
-																echo esc_attr( implode( ' ' . WOOCOMMERCE_DELIMITER . ' ', $values ) );
+																echo esc_attr( implode( ' ' . WC_DELIMITER . ' ', $values ) );
 															}
 
 														?>" placeholder="<?php _e( 'Pipe (|) separate terms', 'woocommerce' ); ?>" />
@@ -743,7 +743,7 @@ class WC_Meta_Box_Product_Data {
 					<div class="squeezer">
 						<h4><?php _e( 'Before adding variations, add and save some attributes on the <strong>Attributes</strong> tab.', 'woocommerce' ); ?></h4>
 
-						<p class="submit"><a class="button-primary" href="http://docs.woothemes.com/document/product-variations/" target="_blank"><?php _e( 'Learn more', 'woocommerce' ); ?></a></p>
+						<p class="submit"><a class="button-primary" href="<?php echo esc_url( apply_filters( 'woocommerce_docs_url', 'http://docs.woothemes.com/document/product-variations', 'product-variations' ) ); ?>" target="_blank"><?php _e( 'Learn more', 'woocommerce' ); ?></a></p>
 					</div>
 				</div>
 
@@ -898,7 +898,7 @@ class WC_Meta_Box_Product_Data {
 
 							} else {
 
-								$options = array_map( 'trim', explode( WOOCOMMERCE_DELIMITER, $attribute['value'] ) );
+								$options = array_map( 'trim', explode( WC_DELIMITER, $attribute['value'] ) );
 
 								foreach ( $options as $option )
 									echo '<option ' . selected( sanitize_title( $variation_selected_value ), sanitize_title( $option ), false ) . ' value="' . esc_attr( sanitize_title( $option ) ) . '">' . esc_html( apply_filters( 'woocommerce_variation_option_name', $option ) )  . '</option>';
@@ -1036,7 +1036,7 @@ class WC_Meta_Box_Product_Data {
 
 					 	// Text based attributes - Posted values are term names - don't change to slugs
 					 	} else {
-					 		$values = array_map( 'stripslashes', array_map( 'strip_tags', explode( WOOCOMMERCE_DELIMITER, $attribute_values[ $i ] ) ) );
+					 		$values = array_map( 'stripslashes', array_map( 'strip_tags', explode( WC_DELIMITER, $attribute_values[ $i ] ) ) );
 					 	}
 
 					 	// Remove empty items in the array
@@ -1065,7 +1065,7 @@ class WC_Meta_Box_Product_Data {
 			 	} elseif ( isset( $attribute_values[ $i ] ) ) {
 
 			 		// Text based, separate by pipe
-			 		$values = implode( ' ' . WOOCOMMERCE_DELIMITER . ' ', array_map( 'woocommerce_clean', explode( WOOCOMMERCE_DELIMITER, $attribute_values[ $i ] ) ) );
+			 		$values = implode( ' ' . WC_DELIMITER . ' ', array_map( 'woocommerce_clean', explode( WC_DELIMITER, $attribute_values[ $i ] ) ) );
 
 			 		// Custom attribute - Add attribute to array and set the values
 				 	$attributes[ sanitize_title( $attribute_names[ $i ] ) ] = array(
@@ -1499,7 +1499,7 @@ class WC_Meta_Box_Product_Data {
 
 				}
 
-				do_action( 'woocommerce_save_product_variation', $variation_id );
+				do_action( 'woocommerce_save_product_variation', $variation_id, $i );
 			}
 		}
 

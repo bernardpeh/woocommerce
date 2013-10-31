@@ -506,7 +506,7 @@ class WC_Form_Handler {
 		                	$variations[ $taxonomy ] = $value;
 		                else {
 			                // For custom attributes, get the name from the slug
-			                $options = array_map( 'trim', explode( WOOCOMMERCE_DELIMITER, $attribute['value'] ) );
+			                $options = array_map( 'trim', explode( WC_DELIMITER, $attribute['value'] ) );
 			                foreach ( $options as $option ) {
 			                	if ( sanitize_title( $option ) == $value ) {
 			                		$value = $option;
@@ -648,7 +648,7 @@ class WC_Form_Handler {
 				}
 
 				$creds['user_password'] = $_POST['password'];
-				$creds['remember']      = true;
+				$creds['remember']      = isset( $_POST['rememberme'] );
 				$secure_cookie          = is_ssl() ? true : false;
 				$user                   = wp_signon( apply_filters( 'woocommerce_login_credentials', $creds ), $secure_cookie );
 
@@ -717,7 +717,13 @@ class WC_Form_Handler {
 					$args['form'] = 'reset_password';
 				}
 
-				if( 0 == wc_error_count() && ( $_POST['password_1'] == $_POST['password_2'] ) ) {
+				$errors = new WP_Error();
+				do_action( 'validate_password_reset', $errors, $user );
+				if ( $errors->get_error_messages() )
+					foreach( $errors->get_error_messages() as $error )
+						wc_add_error($error);
+
+				if( 0 == wc_error_count() ) {
 
 					WC_Shortcode_My_Account::reset_password( $user, woocommerce_clean( $_POST['password_1'] ) );
 

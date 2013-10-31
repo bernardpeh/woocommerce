@@ -183,7 +183,7 @@ Yes you can! Join in on our [GitHub repository](http://github.com/woothemes/wooc
 * Feature - Handling for password protected products.
 * Feature - Schema markup selector for downloadables.
 * Feature - woocommerce_get_featured_product_ids function.
-* Feature - WOOCOMMERCE_DELIMITER to customise the pipes for attributes
+* Feature - WC_DELIMITER to customise the pipes for attributes
 * Feature - Standardized, default credit card form for gateways to use if they support 'default_credit_card_form'.
 * Feature - Coupon usage limits per user (using email + ID).
 * Tweak - Added pagination to tax rate screens.
@@ -209,6 +209,11 @@ Yes you can! Join in on our [GitHub repository](http://github.com/woothemes/wooc
 * Tweak - local delivery _ pattern matching for postcodes. e.g. NG1___ would match NG1 1AA but not NG10 1AA.
 * Tweak - Improved layered nav OR count logic
 * Tweak - Make shipping methods check if taxable, so when customer is VAT excempt taxes are not included in price.
+* Tweak - Coupon in admin bar new menu #3974
+* Tweak - Shortcode tag filters + updated menu names to make white labelling easier.
+* Tweak - Removed placeholder polyfill. Use this plugin to replace functionality if required: http://wordpress.org/plugins/html5-placeholder-polyfill/
+* Tweak - Replaced all instances of &rarr; and &larr; in frontent using wc icon font plus .wc-forward and .wc-backward utility classes.
+* Tweak - Add review form no longer opens in lightbox.
 * Fix - Changed MyException to Exception in Checkout class as MyException class does not exist in WooCommerce
 * Fix - Default cart widget styling on non-wc pages.
 * Fix - Rounding for mijireh tax ex. price.

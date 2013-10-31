@@ -87,7 +87,7 @@ function wc_setup_product_data( $post ) {
  * @return void
  */
 function wc_generator_tag() {
-	echo "\n\n" . '<!-- WooCommerce Version -->' . "\n" . '<meta name="generator" content="WooCommerce ' . esc_attr( WOOCOMMERCE_VERSION ) . '" />' . "\n\n";
+	echo "\n\n" . '<!-- WooCommerce Version -->' . "\n" . '<meta name="generator" content="WooCommerce ' . esc_attr( WC_VERSION ) . '" />' . "\n\n";
 }
 
 /**
@@ -1102,17 +1102,19 @@ function wc_cart_totals_subtotal_html() {
  * Get a coupon value
  * @param  string $code
  */
-function wc_cart_totals_coupon_html( $code ) {
-	$coupon = new WC_Coupon( $code );
+function wc_cart_totals_coupon_html( $coupon ) {
+	if ( is_string( $coupon ) )
+		$coupon = new WC_Coupon( $coupon );
+
 	$value  = array();
 
-	if ( ! empty( WC()->cart->coupon_discount_amounts[ $code ] ) )
-		$value[] = '-' . woocommerce_price( WC()->cart->coupon_discount_amounts[ $code ] );
+	if ( ! empty( WC()->cart->coupon_discount_amounts[ $coupon->code ] ) )
+		$value[] = '-' . woocommerce_price( WC()->cart->coupon_discount_amounts[ $coupon->code ] );
 
 	if ( $coupon->enable_free_shipping() )
 		$value[] = __( 'Free shipping coupon', 'woocommerce' );
 
-	echo implode( ', ', $value ) . ' <a href="' . add_query_arg( 'remove_coupon', $code, WC()->cart->get_cart_url() ) . '" class="woocommerce-remove-coupon">' . __( '[Remove]', 'woocommerce' ) . '</a>';
+	echo implode( ', ', $value ) . ' <a href="' . add_query_arg( 'remove_coupon', $coupon->code, WC()->cart->get_cart_url() ) . '" class="woocommerce-remove-coupon">' . __( '[Remove]', 'woocommerce' ) . '</a>';
 }
 
 /**
@@ -1129,7 +1131,7 @@ function wc_cart_totals_order_total_html() {
 			foreach ( WC()->cart->get_tax_totals() as $code => $tax )
 				$tax_string_array[] = sprintf( '%s %s', $tax->formatted_amount, $tax->label );
 		} else {
-			$tax_string_array[] = sprintf( '%s %s', woocommerce_price( WC()->cart->get_taxes_total() ), WC()->countries->tax_or_vat() );
+			$tax_string_array[] = sprintf( '%s %s', woocommerce_price( WC()->cart->get_taxes_total( true, true ) ), WC()->countries->tax_or_vat() );
 		}
 
 		if ( ! empty( $tax_string_array ) )

@@ -58,7 +58,7 @@ class WC_Admin_Attributes {
 
 			// Auto-generate the label or slug if only one of both was provided
 			if ( ! $attribute_label ) {
-				$attribute_label = ucwords( $attribute_name );
+				$attribute_label = ucfirst( $attribute_name );
 			}
 			if ( ! $attribute_name ) {
 				$attribute_name = woocommerce_sanitize_taxonomy_name( stripslashes( $attribute_label ) );
@@ -231,7 +231,7 @@ class WC_Admin_Attributes {
 		<div class="wrap woocommerce">
 			<div class="icon32 icon32-attributes" id="icon-woocommerce"><br/></div>
 		    <h2><?php _e( 'Edit Attribute', 'woocommerce' ) ?></h2>
-			<form action="admin.php?page=woocommerce_attributes&amp;edit=<?php echo absint( $edit ); ?>" method="post">
+			<form action="admin.php?page=product_attributes&amp;edit=<?php echo absint( $edit ); ?>" method="post">
 				<table class="form-table">
 					<tbody>
 						<tr class="form-field form-required">
@@ -321,10 +321,10 @@ class WC_Admin_Attributes {
 
 					        					<td><a href="edit-tags.php?taxonomy=<?php echo esc_html(wc_attribute_taxonomy_name($tax->attribute_name)); ?>&amp;post_type=product"><?php echo esc_html( $tax->attribute_label ); ?></a>
 
-					        					<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=woocommerce_attributes') ); ?>"><?php _e( 'Edit', 'woocommerce' ); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( wp_nonce_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=woocommerce_attributes'), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>"><?php _e( 'Delete', 'woocommerce' ); ?></a></span></div>
+					        					<div class="row-actions"><span class="edit"><a href="<?php echo esc_url( add_query_arg('edit', $tax->attribute_id, 'admin.php?page=product_attributes') ); ?>"><?php _e( 'Edit', 'woocommerce' ); ?></a> | </span><span class="delete"><a class="delete" href="<?php echo esc_url( wp_nonce_url( add_query_arg('delete', $tax->attribute_id, 'admin.php?page=product_attributes'), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>"><?php _e( 'Delete', 'woocommerce' ); ?></a></span></div>
 					        					</td>
 					        					<td><?php echo esc_html( $tax->attribute_name ); ?></td>
-					        					<td><?php echo esc_html( ucwords( $tax->attribute_type ) ); ?></td>
+					        					<td><?php echo esc_html( ucfirst( $tax->attribute_type ) ); ?></td>
 					        					<td><?php
 						        					switch ( $tax->attribute_orderby ) {
 							        					case 'name' :
@@ -370,7 +370,7 @@ class WC_Admin_Attributes {
 		    			<div class="form-wrap">
 		    				<h3><?php _e( 'Add New Attribute', 'woocommerce' ) ?></h3>
 		    				<p><?php _e( 'Attributes let you define extra product data, such as size or colour. You can use these attributes in the shop sidebar using the "layered nav" widgets. Please note: you cannot rename an attribute later on.', 'woocommerce' ) ?></p>
-		    				<form action="admin.php?page=woocommerce_attributes" method="post">
+		    				<form action="admin.php?page=product_attributes" method="post">
 								<div class="form-field">
 									<label for="attribute_label"><?php _e( 'Name', 'woocommerce' ); ?></label>
 									<input name="attribute_label" id="attribute_label" type="text" value="" />
